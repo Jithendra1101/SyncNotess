@@ -1,0 +1,44 @@
+import {NextRequest, NextResponse} from 'next/server';
+import {auth} from "@clerk/nextjs/server";
+import liveblocks from "@/lib/liveblocks";
+import { adminDb } from '@/firebase-admin';
+export async function POST(request: NextRequest) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  // You can add more logic here if needed, like fetching user data or other operations
+
+  const {sessionClaims}= await auth();
+  const {room} = await request.json();
+
+
+  const session = liveblocks.prepareSession(sessionClaims?.email!,{
+    userInfo:{
+        name:sessionClaims?.fullName!,
+        email:sessionClaims?.email!,
+        avatar:sessionClaims?.image!,
+    }
+  });
+  const usersInRoom = await adminDb.collection("rooms")
+  .where("userId","==", sessionClaims?.email!)
+  .get();
+
+  const userInRoom = usersInRoom.docs.find((doc) => doc.id ===room);
+  if (userInRoom?.exists){
+    session.allow(room,session.FULL_ACCESS);
+    const{body,status}= await session.authorize();
+    console.log('You are authorized to access this room:', room);
+    return new Response(body,{status});
+  }
+  else{
+    return NextResponse.json(
+        {message: "You are not authorized to access this room"},
+        {status: 403}
+    );
+  }
+
+
+}
