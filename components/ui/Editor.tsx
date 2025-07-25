@@ -60,22 +60,25 @@ function Editor() {
     const[provider,setProvider] = useState<LiveblocksYjsProvider>();
     const[darkMode,setDarkMode] = useState(false);
     const style = darkMode ? "bg-gray-800 text-white" : "bg-white text-black";
+    
     useEffect(() =>{
         const yDoc = new Y.Doc();
         const yProvider = new LiveblocksYjsProvider(room, yDoc);
 
         setDoc(yDoc);
         setProvider(yProvider);
+        
         return () => {
-            yDoc.destroy();
             yProvider.destroy();
+            yDoc.destroy();
         };
 
     },[room])
 
 
     if (!doc || !provider) {
-        return null;}
+        return null;
+    }
 
   return (
     <div className="max-w-6xl mx-auto">
