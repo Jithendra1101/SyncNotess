@@ -11,8 +11,7 @@ function RoomProvider({roomId,children}:{roomId:string,children:React.ReactNode}
   >
     
     <ClientSideSuspense fallback={<LoadingSpinner />}>
-    <LivecursorProvider>       {children}</LivecursorProvider>
-    {children}
+    <LivecursorProvider>{children}</LivecursorProvider>
     </ClientSideSuspense>
     
     
