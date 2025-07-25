@@ -41,7 +41,7 @@ const [data, loading, error] = useCollection(
   user?.emailAddresses?.[0]
     ? query(
         collectionGroup(db, 'rooms'),
-        where('userId', '==', user.emailAddresses[0].toString())
+        where('userId', '==', user.emailAddresses[0].emailAddress)
       )
     : null
 );

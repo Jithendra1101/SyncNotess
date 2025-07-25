@@ -12,7 +12,18 @@ export async function POST(request: NextRequest) {
   // You can add more logic here if needed, like fetching user data or other operations
 
   const {sessionClaims}= await auth();
-  const {room} = await request.json();
+  
+  let room;
+  try {
+    const body = await request.json();
+    room = body.room;
+  } catch (error) {
+    return new Response("Invalid JSON in request body", { status: 400 });
+  }
+
+  if (!room) {
+    return new Response("Room parameter is required", { status: 400 });
+  }
 
 
   const session = liveblocks.prepareSession(sessionClaims?.email!,{
