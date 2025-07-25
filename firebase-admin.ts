@@ -3,7 +3,7 @@ import { initializeApp,App,getApps,cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
 
-const serviceKey = require("@/service_key.json");
+const serviceKey = JSON.parse(process.env.FIREBASE_ADMIN_SDK_CREDENTIALS || '{}');
 let app: App;
 
 if(getApps().length === 0) {
