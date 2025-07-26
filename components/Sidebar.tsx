@@ -1,6 +1,6 @@
 "use client";
 
-import NewDocumentButton from "./NewDocumentbutton"
+import NewDocumentButton from "./NewDocumentButton"
 import { Button } from "@/components/ui/button";  
 import {
   Sheet,
