@@ -3,11 +3,11 @@ import {Liveblocks} from "@liveblocks/node";
 const key = process.env.LIVEBLOCKS_PRIVATE_KEY;
 
 if(!key) {
-  throw new Error("LIVEBLOCKS_PRIVATE_KEY is not defined in the environment variables.");
+  console.warn("LIVEBLOCKS_PRIVATE_KEY is not defined in the environment variables.");
 }
 
-const liveblocks = new Liveblocks({
+const liveblocks = key ? new Liveblocks({
   secret: key,
-});
+}) : null;
 
 export default liveblocks;

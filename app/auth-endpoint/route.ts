@@ -3,6 +3,10 @@ import {auth} from "@clerk/nextjs/server";
 import liveblocks from "@/lib/liveblocks";
 import { adminDb } from '@/firebase-admin';
 export async function POST(request: NextRequest) {
+  if (!liveblocks) {
+    return new Response("Liveblocks not configured", { status: 500 });
+  }
+
   const { userId } = await auth();
 
   if (!userId) {
